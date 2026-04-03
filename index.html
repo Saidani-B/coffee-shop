@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coffee Shop Order</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f1ea; color: #333; margin: 0; padding: 0; }
+    .container { max-width: 580px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,.12); padding: 26px; }
+    h1 { margin-top: 0; text-align: center; color: #6a3f0d; }
+    .section { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    select, button { width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid #c0b7ad; font-size: 1rem; }
+    button { background: #6b4226; color: #fff; border: none; cursor: pointer; margin-top: 8px; }
+    button:hover { background: #5a361f; }
+    .result { margin-top: 16px; border-radius: 6px; background: #f9f2e9; padding: 14px; border: 1px dashed #d7b59c; }
+    .hidden { display: none; }
+    .error { border-color: #e37e6e; background: #fde8e6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Coffee Shop Order</h1>
+    <div class="section">
+      <label for="drinkType">Choose a drink</label>
+      <select id="drinkType">
+        <option value="coffee">Coffee</option>
+        <option value="tea">Tea</option>
+      </select>
+    </div>
+    <div id="coffeeOptions" class="section">
+      <label for="coffeeSugar">Coffee sugar option</label>
+      <select id="coffeeSugar">
+        <option value="without">Without sugar</option>
+        <option value="with">With sugar</option>
+      </select>
+    </div>
+    <div id="teaOptions" class="section hidden">
+      <label for="teaType">Tea type</label>
+      <select id="teaType">
+        <option value="green">Green tea</option>
+        <option value="red">Red tea</option>
+      </select>
+      <label for="teaSugar" style="margin-top: 10px;">Tea sugar option</label>
+      <select id="teaSugar">
+        <option value="without">Without sugar</option>
+        <option value="with">With sugar</option>
+      </select>
+    </div>
+    <div class="section">
+      <button id="placeOrder">Place Order</button>
+    </div>
+    <div id="orderResult" class="result hidden"></div>
+  </div>
+
+  <script>
+    const drinkType = document.getElementById('drinkType');
+    const coffeeOptions = document.getElementById('coffeeOptions');
+    const teaOptions = document.getElementById('teaOptions');
+    const placeOrderButton = document.getElementById('placeOrder');
+    const orderResult = document.getElementById('orderResult');
+
+    function updateOptionVisibility() {
+      const selected = drinkType.value;
+      if (selected === 'coffee') {
+        coffeeOptions.classList.remove('hidden');
+        teaOptions.classList.add('hidden');
+      } else {
+        coffeeOptions.classList.add('hidden');
+        teaOptions.classList.remove('hidden');
+      }
+      orderResult.classList.add('hidden');
+      orderResult.classList.remove('error');
+    }
+
+    async function createOrder() {
+      const selected = drinkType.value;
+      let message = `Order placed: ${selected}`;
+
+      if (selected === 'coffee') {
+        const sugar = document.getElementById('coffeeSugar').value;
+        message += ` (${sugar} sugar)`;
+      } else {
+        const teaType = document.getElementById('teaType').value;
+        const sugar = document.getElementById('teaSugar').value;
+        message += ` (${teaType}, ${sugar} sugar)`;
+      }
+
+      orderResult.textContent = message;
+      orderResult.classList.remove('hidden');
+      orderResult.classList.remove('error');
+    }
+
+    drinkType.addEventListener('change', updateOptionVisibility);
+    placeOrderButton.addEventListener('click', createOrder);
+
+    updateOptionVisibility();
+  </script>
+</body>
+</html>
+            
